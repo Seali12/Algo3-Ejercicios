@@ -1,0 +1,5 @@
+1-Primeramente creamos un mensaje el cual calculaba un tiempo y lo comparaba con otro limite, como un cronometro o una especie de limitador de tiempo para controlar si la operacion superaba el tiempo limite, esto para el ente de la realidad que creemos que pensamos.Luego nos dimos cuenta que smalltalk ya cuenta con un mensaje el cual realiza esto y decidimos utilizarlo para "no reinventar la rueda".
+
+2-En smalltalk podemos representar entidades a traves de clases y sus instancias. Si queremos representar la "idea" abrstracta de un entende de la ralidad usamos las Clases y si queresmos representar ese ente como un objeto en concreto usamos la instancia de la clase.
+
+3-La relacion que vemos es que al sacar codigo repetido y la teoria de Naur es que al generar buenas abstracciones el codigo va a tener un mejor mantenimiento a lo largo del tiempo y asi podria adaptarse mejor a las funcionalidades futuras ya que a la hora de modificar algo en el codigo habria menos lugares en los que cambiar cosas gracias las buenas abstraciones.
