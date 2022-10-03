@@ -1,0 +1,9 @@
+En un double dispatch (DD), ¿qué información aporta cada uno de los dos llamados? ->  En el primer llamado se conserva la informacion  mediante la introduccion de una nueva familia de mensajes esta informacion define un metodo de retransmision en cada objeto para efectuar un proximo envio. En el caso del ejercicio el mensaje "+" es polimorfico , quien lo envia es el argumento y eso determina como se realiza la operacion.
+
+Con lo que vieron y saben hasta ahora, ¿donde les parece mejor tener la lógica de cómo instanciar un objeto? ¿por qué? ¿Y si se crea ese objeto desde diferentes lugares y de diferentes formas? ¿cómo lo resuelven? -> Es mejor instanciar con un mensaje "new" el cual sepa responderlo la clase ya que justamente estamos tratando con clases. En el caso de que objetos varien en lugar y forma es posible efectuarle a cada una de las subclases la instancia segun una condicion que nosotros determinemos
+
+Con lo que vieron y trabajaron hasta ahora, ¿qué criterio están usando para categorizar métodos?->El criterio que usamos es segun que rol cumplan en el dominio del problema que estamos tratando, por ultimo definimos mensajes privados segun correspondan
+
+Si todas las subclases saben responder un mismo mensaje, ¿por qué ponemos ese mensaje sólo con un “self subclassResponsibility” en la superclase? ¿para qué sirve?->Lo ponemos para reconocer mas rapido el error de que un mensaje debe ser redefinido por sus subclases para tambien sirve para dar claridad al error. 
+
+¿Por qué está mal/qué problemas trae romper encapsulamiento?->Aumenta el acoplamiento es decir, si objeto conoce los colaboradores internos de otro su relacion es cruzada por ende causa un gran impacto en el sistema a la hora de aumentar la escala del codigo ya que aumenta las probabilidad de propagar un error. La idea es que los objetos se les diga que hacer y ellos sepan responder a los pedido, y no que ellos pidan que hacer.
