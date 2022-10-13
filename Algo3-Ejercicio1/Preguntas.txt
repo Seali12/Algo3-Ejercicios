@@ -1,0 +1,5 @@
+1- El problema esta en que la vida del combatiente no puede pasar de 20*pv, por lo cual el negar estaHerido podria traer problemas ya que seria true tambien cunado la vida del combatiente sea mayor a 20. Tambien creemos que tenerlo en dos mensajes esclarece el codigo.
+
+2- Nuestra opinion es que hubiese sido mejor que pudieramos aplicar el parentesco sin el problema de los colaboradores explicado por lucho en la clase, de esta forma bastaria con que uno de los combatientes padre pase los test para que sus hijos tambien funcionen correctamente.
+
+3- Nosotros modelamos el resultado como un string que se guarda en la varible temporal resultado, este lo informa como 'Gano el bando1', 'Gano el bando 2' o 'Inderterminado' como muestra en la consigna. Esto lo entiende el objeto cuando se le envia el mensaje. Creemos que esta opciones de desarrollarlo con mensajes es la mejor por que basicamente le decimos al objeto que determine quien fue el ganador.
