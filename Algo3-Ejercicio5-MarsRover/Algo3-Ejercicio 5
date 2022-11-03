@@ -1,0 +1,507 @@
+!classDefinition: #TestMarsRover category: 'Ejercicio-MarsRover'!
+TestCase subclass: #TestMarsRover
+	instanceVariableNames: 'marsRoverDireccionNorte marsRoverDireccionSur marsRoverDireccionOeste marsRoverDireccionEste'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Ejercicio-MarsRover'!
+
+!TestMarsRover methodsFor: 'punto cardinal' stamp: 'LV 10/30/2022 10:37:33'!
+este
+	
+	^MarsRoverDireccionEste! !
+
+!TestMarsRover methodsFor: 'punto cardinal' stamp: 'LV 10/30/2022 10:33:27'!
+norte
+	
+	^MarsRoverDireccionNorte.! !
+
+!TestMarsRover methodsFor: 'punto cardinal' stamp: 'LV 10/30/2022 10:37:40'!
+oeste
+	
+	^MarsRoverDireccionOeste! !
+
+!TestMarsRover methodsFor: 'punto cardinal' stamp: 'LV 10/30/2022 10:37:49'!
+sur
+	
+	^MarsRoverDireccionSur! !
+
+
+!TestMarsRover methodsFor: 'test' stamp: 'LV 11/2/2022 12:09:39'!
+assertUnMarsRover: marsRover respondeAUnPaqueteDeComandos: unPaqueteDeUnComandos ySeEsperaQueEsteEnLaPosicion: unPuntoEnElPlanoEsperado apuntandoHaciaUnaDireccionCardinal: direccionCardinalEsperada
+
+	marsRover ejecutarComandos: unPaqueteDeUnComandos.
+		
+	self assert: (marsRover esEstaTuPosicion: unPuntoEnElPlanoEsperado enLaDireccion: direccionCardinalEsperada) ! !
+
+!TestMarsRover methodsFor: 'test' stamp: 'LV 11/2/2022 12:09:28'!
+test01MarsRoverNoModificaSuPosicionCuandoNoRecibeComandos
+	
+	self assertUnMarsRover: marsRoverDireccionNorte respondeAUnPaqueteDeComandos: '' ySeEsperaQueEsteEnLaPosicion: (0@0)  apuntandoHaciaUnaDireccionCardinal: self norte.
+	
+	self deny: (marsRoverDireccionNorte tieneComandosAEjecutar:'')
+	
+	
+	
+	! !
+
+!TestMarsRover methodsFor: 'test' stamp: 'LV 11/2/2022 12:09:28'!
+test02MarsRoverEnDireccionNorteAvanzaUnaVez
+	
+	self assertUnMarsRover: marsRoverDireccionNorte respondeAUnPaqueteDeComandos:'f' ySeEsperaQueEsteEnLaPosicion: (0@1) apuntandoHaciaUnaDireccionCardinal: self norte.
+	! !
+
+!TestMarsRover methodsFor: 'test' stamp: 'LV 11/2/2022 12:09:28'!
+test03MarsRoverEnDireccionNorteRetrocedeUnaVez
+	
+	self assertUnMarsRover: marsRoverDireccionNorte respondeAUnPaqueteDeComandos: 'b' ySeEsperaQueEsteEnLaPosicion:(0@-1)  apuntandoHaciaUnaDireccionCardinal: self norte! !
+
+!TestMarsRover methodsFor: 'test' stamp: 'LV 11/2/2022 12:09:28'!
+test04MarsRoverEnDireccionNorteGiraALaIzquierdaUnaVez
+	
+	self assertUnMarsRover: marsRoverDireccionNorte respondeAUnPaqueteDeComandos: 'l' ySeEsperaQueEsteEnLaPosicion: (0@0)  apuntandoHaciaUnaDireccionCardinal: self oeste! !
+
+!TestMarsRover methodsFor: 'test' stamp: 'LV 11/2/2022 12:09:28'!
+test05MarsRoverEnDireccionNorteGiraALaDerechaUnaVez
+	
+	self assertUnMarsRover: marsRoverDireccionNorte respondeAUnPaqueteDeComandos: 'r' ySeEsperaQueEsteEnLaPosicion:(0@0)  apuntandoHaciaUnaDireccionCardinal: self este! !
+
+!TestMarsRover methodsFor: 'test' stamp: 'LV 11/2/2022 12:09:28'!
+test06MarsRoverEnDireccionSurAvanzaUnaVez
+	
+	self assertUnMarsRover: marsRoverDireccionSur respondeAUnPaqueteDeComandos:'f'  ySeEsperaQueEsteEnLaPosicion: (0@-1) apuntandoHaciaUnaDireccionCardinal: self sur.
+	! !
+
+!TestMarsRover methodsFor: 'test' stamp: 'LV 11/2/2022 12:09:28'!
+test07MarsRoverEnDireccionSurRetrocedeUnaVez
+	
+	self assertUnMarsRover: marsRoverDireccionSur respondeAUnPaqueteDeComandos:'b' ySeEsperaQueEsteEnLaPosicion: (0@1) apuntandoHaciaUnaDireccionCardinal: self sur.
+	! !
+
+!TestMarsRover methodsFor: 'test' stamp: 'LV 11/2/2022 12:09:28'!
+test08MarsRoverEnDireccionSurGiraALaIzquierdaUnaVez
+	
+	self assertUnMarsRover: marsRoverDireccionSur respondeAUnPaqueteDeComandos:'l' ySeEsperaQueEsteEnLaPosicion: (0@0) apuntandoHaciaUnaDireccionCardinal: self este.
+	! !
+
+!TestMarsRover methodsFor: 'test' stamp: 'LV 11/2/2022 12:09:29'!
+test09MarsRoverEnDireccionSurGiraALaDerechaUnaVez
+	
+	self assertUnMarsRover: marsRoverDireccionSur respondeAUnPaqueteDeComandos: 'r' ySeEsperaQueEsteEnLaPosicion:(0@0)  apuntandoHaciaUnaDireccionCardinal: self oeste! !
+
+!TestMarsRover methodsFor: 'test' stamp: 'LV 11/2/2022 12:09:28'!
+test10MarsRoverEnDireccionOesteAvanzaUnaVez
+	
+	self assertUnMarsRover: marsRoverDireccionOeste respondeAUnPaqueteDeComandos:'f'  ySeEsperaQueEsteEnLaPosicion: (-1@0) apuntandoHaciaUnaDireccionCardinal: self oeste .
+	! !
+
+!TestMarsRover methodsFor: 'test' stamp: 'LV 11/2/2022 12:09:28'!
+test11MarsRoverEnDireccionOesteRetrocedeUnaVez
+	
+	self assertUnMarsRover: marsRoverDireccionOeste respondeAUnPaqueteDeComandos: 'b' ySeEsperaQueEsteEnLaPosicion:(1@0)  apuntandoHaciaUnaDireccionCardinal: self oeste ! !
+
+!TestMarsRover methodsFor: 'test' stamp: 'LV 11/2/2022 12:09:28'!
+test12MarsRoverEnDireccionOesteGiraALaIzquierdaUnaVez
+	
+	self assertUnMarsRover: marsRoverDireccionOeste respondeAUnPaqueteDeComandos: 'l' ySeEsperaQueEsteEnLaPosicion: (0@0)  apuntandoHaciaUnaDireccionCardinal: self sur ! !
+
+!TestMarsRover methodsFor: 'test' stamp: 'LV 11/2/2022 12:09:28'!
+test13MarsRoverEnDireccionOesteGiraALaDerechaUnaVez
+	
+	self assertUnMarsRover: marsRoverDireccionOeste respondeAUnPaqueteDeComandos: 'r' ySeEsperaQueEsteEnLaPosicion:(0@0)  apuntandoHaciaUnaDireccionCardinal: self norte! !
+
+!TestMarsRover methodsFor: 'test' stamp: 'LV 11/2/2022 12:09:28'!
+test14MarsRoverEnDireccionEsteAvanzaUnaVez
+	
+	self assertUnMarsRover: marsRoverDireccionEste respondeAUnPaqueteDeComandos:'f'  ySeEsperaQueEsteEnLaPosicion: (1@0) apuntandoHaciaUnaDireccionCardinal: self este.
+	! !
+
+!TestMarsRover methodsFor: 'test' stamp: 'LV 11/2/2022 12:09:28'!
+test15MarsRoverEnDireccionEsteRetrocedeUnaVez
+	
+	self assertUnMarsRover: marsRoverDireccionEste respondeAUnPaqueteDeComandos: 'b' ySeEsperaQueEsteEnLaPosicion:(-1@0)  apuntandoHaciaUnaDireccionCardinal: self este! !
+
+!TestMarsRover methodsFor: 'test' stamp: 'LV 11/2/2022 12:09:28'!
+test16MarsRoverEnDireccionEsteGiraALaIzquierdaUnaVez
+	
+	self assertUnMarsRover: marsRoverDireccionEste respondeAUnPaqueteDeComandos: 'l' ySeEsperaQueEsteEnLaPosicion: (0@0)  apuntandoHaciaUnaDireccionCardinal: self norte! !
+
+!TestMarsRover methodsFor: 'test' stamp: 'LV 11/2/2022 12:09:28'!
+test17MarsRoverEnDireccionEsteGiraALaDerechaUnaVez
+	
+	self assertUnMarsRover: marsRoverDireccionEste respondeAUnPaqueteDeComandos: 'r' ySeEsperaQueEsteEnLaPosicion:(0@0)  apuntandoHaciaUnaDireccionCardinal: self sur! !
+
+!TestMarsRover methodsFor: 'test' stamp: 'LV 11/3/2022 16:21:57'!
+test18MarsRoverDetieneLaEjecucionCuandoRecibeUnComandoInvalido
+	
+	self should:[	self assertUnMarsRover: marsRoverDireccionNorte  respondeAUnPaqueteDeComandos: 'f�ff' ySeEsperaQueEsteEnLaPosicion: (0@0)  apuntandoHaciaUnaDireccionCardinal: self norte]
+		raise: Error
+		withExceptionDo:[:anErrorMessage | 
+			self assert:  MarsRover errorOperacionInvalida equals: anErrorMessage messageText].
+		
+	self assert: (marsRoverDireccionNorte esEstaTuPosicion: (0@1) enLaDireccion: self norte)
+			
+		! !
+
+!TestMarsRover methodsFor: 'test' stamp: 'LV 11/2/2022 12:09:28'!
+test19MarsRoverEJecutaCorrectamenteUnPaqueteDeComandosValidos
+	
+	self assertUnMarsRover: marsRoverDireccionSur respondeAUnPaqueteDeComandos:'ffbbllrr' ySeEsperaQueEsteEnLaPosicion: (0@0) apuntandoHaciaUnaDireccionCardinal: self sur.
+	
+			
+		! !
+
+
+!TestMarsRover methodsFor: 'setup' stamp: 'LV 10/31/2022 16:46:43'!
+setUp
+	
+	marsRoverDireccionNorte := MarsRover enUnaPosicion: (0@0) apuntandoHacia: self norte.
+	
+	marsRoverDireccionSur := MarsRover enUnaPosicion: (0@0) apuntandoHacia: self sur.
+	
+	marsRoverDireccionOeste := MarsRover enUnaPosicion: (0@0) apuntandoHacia: self oeste.
+	
+	marsRoverDireccionEste := MarsRover enUnaPosicion: (0@0) apuntandoHacia: self este.
+	
+	! !
+
+
+!classDefinition: #MarsRover category: 'Ejercicio-MarsRover'!
+Object subclass: #MarsRover
+	instanceVariableNames: 'puntoActual direccionCardinal'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Ejercicio-MarsRover'!
+
+!MarsRover methodsFor: 'accesing' stamp: 'LV 10/31/2022 16:43:14'!
+esEstaTuPosicion: unPuntoEnElPlano enLaDireccion: unaDireccionCardinal
+
+	^(puntoActual = unPuntoEnElPlano and:[ direccionCardinal class = unaDireccionCardinal]).
+	
+	! !
+
+!MarsRover methodsFor: 'accesing' stamp: 'LV 11/2/2022 13:46:42'!
+tieneComandosAEjecutar: unConjuntoDeComandos
+	
+	^(unConjuntoDeComandos isEmpty not).! !
+
+
+!MarsRover methodsFor: 'intialization' stamp: 'LV 10/31/2022 16:49:17'!
+initializeEnUnPunto: unPuntoInicial apuntandoHacia: unPuntoCardinal
+	
+	puntoActual:= unPuntoInicial .
+	direccionCardinal := unPuntoCardinal para: self.
+	! !
+
+
+!MarsRover methodsFor: 'comandos' stamp: 'LV 11/2/2022 12:11:14'!
+ejecutarComandos: unConjuntoDeComandos
+	
+	unConjuntoDeComandos do:[: unComando |  
+			self procesarComando: unComando ].
+									
+									
+									
+									
+									
+						
+									
+								
+								! !
+
+!MarsRover methodsFor: 'comandos' stamp: 'LV 11/2/2022 13:42:33'!
+procesarComando: unComando
+	
+	(self esComandoHaciaAdelante: unComando) ifTrue: [^self avanzar ].
+									
+	(self esComandoHaciaAtras: unComando) ifTrue: [^self retroceder].
+									
+	(self esComandoHaciaLaIzquierda: unComando) ifTrue: [^self rotarALaIzquierda ].
+									
+	(self esComandoHaciaLaDerecha: unComando) ifTrue: [^self rotarALaDerecha ].
+	
+	^self error: self class errorOperacionInvalida.! !
+
+
+!MarsRover methodsFor: 'private' stamp: 'LV 10/30/2022 11:39:57'!
+esComandoHaciaAdelante: unComando
+
+	^ unComando = $f! !
+
+!MarsRover methodsFor: 'private' stamp: 'LV 10/30/2022 11:40:28'!
+esComandoHaciaAtras: unComando
+
+	^ unComando = $b! !
+
+!MarsRover methodsFor: 'private' stamp: 'LV 11/2/2022 13:42:32'!
+esComandoHaciaLaDerecha: unComando
+
+	^ unComando = $r! !
+
+!MarsRover methodsFor: 'private' stamp: 'LV 10/30/2022 11:41:35'!
+esComandoHaciaLaIzquierda: unComando
+
+	^ unComando = $l! !
+
+
+!MarsRover methodsFor: 'rotacion' stamp: 'LV 10/30/2022 09:57:56'!
+apuntarAlEste
+	
+	direccionCardinal := MarsRoverDireccionEste para: self.
+	
+	! !
+
+!MarsRover methodsFor: 'rotacion' stamp: 'LV 10/30/2022 09:58:12'!
+apuntarAlNorte
+	
+	direccionCardinal := MarsRoverDireccionNorte para: self.! !
+
+!MarsRover methodsFor: 'rotacion' stamp: 'LV 10/30/2022 09:58:40'!
+apuntarAlOeste
+	
+	direccionCardinal := MarsRoverDireccionOeste para: self.! !
+
+!MarsRover methodsFor: 'rotacion' stamp: 'LV 10/30/2022 09:58:24'!
+apuntarAlSur
+	
+	direccionCardinal := MarsRoverDireccionSur para: self.! !
+
+!MarsRover methodsFor: 'rotacion' stamp: 'LV 10/30/2022 19:34:22'!
+rotarALaDerecha
+	
+	direccionCardinal rotarALaDerecha.! !
+
+!MarsRover methodsFor: 'rotacion' stamp: 'LV 10/30/2022 19:34:37'!
+rotarALaIzquierda
+	
+	direccionCardinal rotarALaIzquierda! !
+
+
+!MarsRover methodsFor: 'movimientos' stamp: 'LV 10/30/2022 19:36:10'!
+avanzar
+	
+	direccionCardinal avanzar.! !
+
+!MarsRover methodsFor: 'movimientos' stamp: 'LV 11/2/2022 12:12:15'!
+avanzarEnDireccionEste
+	
+	puntoActual := puntoActual + (1@0)! !
+
+!MarsRover methodsFor: 'movimientos' stamp: 'LV 11/2/2022 12:12:26'!
+avanzarEnDireccionNorte
+	
+	puntoActual := puntoActual + (0@1)! !
+
+!MarsRover methodsFor: 'movimientos' stamp: 'LV 11/2/2022 12:12:32'!
+avanzarEnDireccionOeste
+	
+	puntoActual := puntoActual - (1@0)! !
+
+!MarsRover methodsFor: 'movimientos' stamp: 'LV 11/2/2022 12:12:40'!
+avanzarEnDireccionSur
+	
+	puntoActual := puntoActual - (0@1)! !
+
+!MarsRover methodsFor: 'movimientos' stamp: 'LV 10/30/2022 19:36:28'!
+retroceder
+	
+	direccionCardinal retroceder! !
+
+!MarsRover methodsFor: 'movimientos' stamp: 'LV 11/2/2022 12:12:46'!
+retrocederEnDireccionEste
+	
+	puntoActual := puntoActual - (1@0)! !
+
+!MarsRover methodsFor: 'movimientos' stamp: 'LV 11/2/2022 12:12:53'!
+retrocederEnDireccionNorte
+	
+	puntoActual := puntoActual - (0@1)! !
+
+!MarsRover methodsFor: 'movimientos' stamp: 'LV 11/2/2022 12:12:59'!
+retrocederEnDireccionOeste
+	
+	puntoActual := puntoActual + (1@0)! !
+
+!MarsRover methodsFor: 'movimientos' stamp: 'LV 11/2/2022 12:13:07'!
+retrocederEnDireccionSur
+	
+	puntoActual := puntoActual + (0@1)! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'MarsRover class' category: 'Ejercicio-MarsRover'!
+MarsRover class
+	instanceVariableNames: ''!
+
+!MarsRover class methodsFor: 'instance creation' stamp: 'LV 11/3/2022 16:18:20'!
+enUnaPosicion: unPuntoEnElPlano apuntandoHacia: unPuntoCardinal
+	
+	^(self new initializeEnUnPunto: unPuntoEnElPlano apuntandoHacia: unPuntoCardinal )
+	
+	! !
+
+
+!MarsRover class methodsFor: 'error' stamp: 'LV 10/29/2022 10:50:55'!
+errorOperacionInvalida
+		
+	^'No puedo ejecutar este comando, fin de la operacion'
+	! !
+
+
+!classDefinition: #MarsRoverDireccionCardinal category: 'Ejercicio-MarsRover'!
+Object subclass: #MarsRoverDireccionCardinal
+	instanceVariableNames: 'marsRover'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Ejercicio-MarsRover'!
+
+!MarsRoverDireccionCardinal methodsFor: 'initialize' stamp: 'LV 10/30/2022 09:53:50'!
+inicializarCon: unMarsRover
+	
+	marsRover := unMarsRover.! !
+
+
+!MarsRoverDireccionCardinal methodsFor: 'movimiento' stamp: 'LV 10/30/2022 10:15:10'!
+avanzar
+	
+	self subclassResponsibility ! !
+
+!MarsRoverDireccionCardinal methodsFor: 'movimiento' stamp: 'LV 10/30/2022 10:15:21'!
+retroceder
+	
+	self subclassResponsibility.! !
+
+!MarsRoverDireccionCardinal methodsFor: 'movimiento' stamp: 'LV 10/30/2022 10:14:57'!
+rotarALaDerecha
+	self subclassResponsibility.! !
+
+!MarsRoverDireccionCardinal methodsFor: 'movimiento' stamp: 'LV 10/30/2022 10:14:45'!
+rotarALaIzquierda
+	self subclassResponsibility.
+	! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'MarsRoverDireccionCardinal class' category: 'Ejercicio-MarsRover'!
+MarsRoverDireccionCardinal class
+	instanceVariableNames: ''!
+
+!MarsRoverDireccionCardinal class methodsFor: 'as yet unclassified' stamp: 'LV 10/30/2022 10:35:42'!
+para: unMarsRover
+	
+	^(self new inicializarCon: unMarsRover) .
+	! !
+
+
+!classDefinition: #MarsRoverDireccionEste category: 'Ejercicio-MarsRover'!
+MarsRoverDireccionCardinal subclass: #MarsRoverDireccionEste
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Ejercicio-MarsRover'!
+
+!MarsRoverDireccionEste methodsFor: 'movimiento' stamp: 'LV 11/2/2022 12:12:15'!
+avanzar
+
+	marsRover avanzarEnDireccionEste.
+	
+	! !
+
+!MarsRoverDireccionEste methodsFor: 'movimiento' stamp: 'LV 11/2/2022 12:12:46'!
+retroceder
+	
+	marsRover retrocederEnDireccionEste.
+	! !
+
+!MarsRoverDireccionEste methodsFor: 'movimiento' stamp: 'LV 10/30/2022 10:17:01'!
+rotarALaDerecha
+	
+	marsRover apuntarAlSur.! !
+
+!MarsRoverDireccionEste methodsFor: 'movimiento' stamp: 'LV 10/30/2022 10:16:37'!
+rotarALaIzquierda
+	
+	marsRover apuntarAlNorte.! !
+
+
+!classDefinition: #MarsRoverDireccionNorte category: 'Ejercicio-MarsRover'!
+MarsRoverDireccionCardinal subclass: #MarsRoverDireccionNorte
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Ejercicio-MarsRover'!
+
+!MarsRoverDireccionNorte methodsFor: 'movimiento' stamp: 'LV 11/2/2022 12:12:26'!
+avanzar
+	
+	marsRover avanzarEnDireccionNorte.! !
+
+!MarsRoverDireccionNorte methodsFor: 'movimiento' stamp: 'LV 11/2/2022 12:12:53'!
+retroceder
+	
+	marsRover retrocederEnDireccionNorte.! !
+
+!MarsRoverDireccionNorte methodsFor: 'movimiento' stamp: 'LV 10/30/2022 10:27:11'!
+rotarALaDerecha
+	
+	marsRover apuntarAlEste.! !
+
+!MarsRoverDireccionNorte methodsFor: 'movimiento' stamp: 'LV 10/30/2022 10:27:26'!
+rotarALaIzquierda
+	
+	marsRover apuntarAlOeste .! !
+
+
+!classDefinition: #MarsRoverDireccionOeste category: 'Ejercicio-MarsRover'!
+MarsRoverDireccionCardinal subclass: #MarsRoverDireccionOeste
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Ejercicio-MarsRover'!
+
+!MarsRoverDireccionOeste methodsFor: 'movimiento' stamp: 'LV 11/2/2022 12:12:32'!
+avanzar
+	
+	marsRover avanzarEnDireccionOeste.! !
+
+!MarsRoverDireccionOeste methodsFor: 'movimiento' stamp: 'LV 11/2/2022 12:12:59'!
+retroceder
+	
+	marsRover retrocederEnDireccionOeste.! !
+
+!MarsRoverDireccionOeste methodsFor: 'movimiento' stamp: 'LV 10/30/2022 10:29:00'!
+rotarALaDerecha
+
+	marsRover apuntarAlNorte .! !
+
+!MarsRoverDireccionOeste methodsFor: 'movimiento' stamp: 'LV 10/30/2022 10:29:35'!
+rotarALaIzquierda
+
+	marsRover apuntarAlSur.! !
+
+
+!classDefinition: #MarsRoverDireccionSur category: 'Ejercicio-MarsRover'!
+MarsRoverDireccionCardinal subclass: #MarsRoverDireccionSur
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Ejercicio-MarsRover'!
+
+!MarsRoverDireccionSur methodsFor: 'movimiento' stamp: 'LV 11/2/2022 12:12:40'!
+avanzar
+	
+	marsRover avanzarEnDireccionSur ! !
+
+!MarsRoverDireccionSur methodsFor: 'movimiento' stamp: 'LV 11/2/2022 12:13:07'!
+retroceder
+	
+	marsRover retrocederEnDireccionSur ! !
+
+!MarsRoverDireccionSur methodsFor: 'movimiento' stamp: 'LV 10/30/2022 11:08:45'!
+rotarALaDerecha
+	
+	marsRover apuntarAlOeste ! !
+
+!MarsRoverDireccionSur methodsFor: 'movimiento' stamp: 'LV 10/30/2022 11:08:39'!
+rotarALaIzquierda
+	
+	marsRover apuntarAlEste ! !
