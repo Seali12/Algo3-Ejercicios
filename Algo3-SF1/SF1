@@ -1,0 +1,742 @@
+!classDefinition: #PortfolioTest category: 'ServiciosFinancieros-Ejercicio'!
+TestCase subclass: #PortfolioTest
+	instanceVariableNames: 'anAccountWith50Pesos anAccountWith100Pesos aPortfolio anotherPortfolio depositOf50Pesos withdrawOf50Pesos'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio'!
+
+!PortfolioTest methodsFor: 'test' stamp: 'LV 11/10/2022 14:42:36'!
+aPortfolioWith150Pesos
+	
+	aPortfolio register: anAccountWith50Pesos.
+	aPortfolio register: anAccountWith100Pesos.
+	^aPortfolio ! !
+
+!PortfolioTest methodsFor: 'test' stamp: 'LV 11/10/2022 14:44:56'!
+assertAPortfolio: portfolio registered: anAccount andHasABalanceof: anAmount
+	
+	portfolio register: anAccount .
+	
+	self assert: portfolio balance equals: anAmount ! !
+
+!PortfolioTest methodsFor: 'test' stamp: 'LV 11/8/2022 20:52:49'!
+assertCanNotAddAnAccount: account onAPortfolio: portfolio andRaiseError: aBlockWithAnError
+	
+		self should:[ portfolio register: account] 
+		raise:Error
+		withExceptionDo:[ :anErrorMessageText| 
+				self assert: aBlockWithAnError value equals: anErrorMessageText messageText ].! !
+
+!PortfolioTest methodsFor: 'test' stamp: 'LV 11/10/2022 15:08:26'!
+registered: anAccount onPortoflio: portfolio andRegistered:anotherAccount onPortfolio: aDifferentPortfolio
+	
+	portfolio register: anAccount .
+	aDifferentPortfolio register: anotherAccount .
+	! !
+
+!PortfolioTest methodsFor: 'test' stamp: 'LV 11/10/2022 14:46:38'!
+test01PortfolioHasZeroAsBalanceWhenCreated
+	
+	self assert: aPortfolio balance equals: 0 * peso
+	
+	
+	! !
+
+!PortfolioTest methodsFor: 'test' stamp: 'LV 11/10/2022 14:45:34'!
+test02BalanceWithOneRegisteredAccount
+	
+	self assertAPortfolio: aPortfolio registered: anAccountWith50Pesos  andHasABalanceof: 50 * peso! !
+
+!PortfolioTest methodsFor: 'test' stamp: 'LV 11/10/2022 14:46:08'!
+test03BalanceWithMoreThanOneRegisteredAccount
+
+	self assertAPortfolio: anotherPortfolio registered: self aPortfolioWith150Pesos  andHasABalanceof: 150 * peso ! !
+
+!PortfolioTest methodsFor: 'test' stamp: 'LV 11/10/2022 15:08:26'!
+test04PortfolioKnowsRegisteredTransaction
+	
+	self registered: anAccountWith50Pesos onPortoflio: aPortfolio  andRegistered: anAccountWith100Pesos onPortfolio: aPortfolio.
+	
+	self assert: (aPortfolio hasRegistered: depositOf50Pesos ).
+	self assert: (aPortfolio hasRegistered: 	withdrawOf50Pesos ).
+	! !
+
+!PortfolioTest methodsFor: 'test' stamp: 'LV 11/9/2022 22:47:26'!
+test05PortfolioDoesNotKnowNotRegisteredTransaction
+	
+	| deposit withdraw|
+	
+	deposit := Deposit for: 100 * peso .
+	withdraw := Withdraw for: 100 * peso. 
+	
+	aPortfolio register: anAccountWith50Pesos.
+	
+	self deny: (aPortfolio hasRegistered: deposit ).
+	self deny: (aPortfolio hasRegistered: 	withdraw ).
+	! !
+
+!PortfolioTest methodsFor: 'test' stamp: 'LV 11/10/2022 15:06:16'!
+test06APortfolioKnowsItsTransactions
+	
+	aPortfolio  register: anAccountWith50Pesos .
+	
+	self assert: aPortfolio transactions includes: depositOf50Pesos .
+	self assert: 	aPortfolio transactions size equals: 1
+	
+	
+	
+		
+
+	
+	
+	! !
+
+!PortfolioTest methodsFor: 'test' stamp: 'LV 11/8/2022 20:53:02'!
+test07CanNotRegisteredAnAccountTwice
+	
+	aPortfolio register: anAccountWith50Pesos.
+	
+	self assertCanNotAddAnAccount: anAccountWith50Pesos onAPortfolio: aPortfolio  andRaiseError:[Portfolio errorAnAccountIsAlreadyRegistered ].! !
+
+!PortfolioTest methodsFor: 'test' stamp: 'LV 11/10/2022 15:08:26'!
+test08CanNotAddAnAccountAlreadyRegisteredInAnotherPortfolio
+
+	self registered: anAccountWith50Pesos  onPortoflio: aPortfolio  andRegistered: aPortfolio  onPortfolio: anotherPortfolio. 
+	
+	self assertCanNotAddAnAccount: anAccountWith50Pesos onAPortfolio: anotherPortfolio  andRaiseError: [Portfolio errorAnAccountIsAlreadyRegistered ].! !
+
+!PortfolioTest methodsFor: 'test' stamp: 'LV 11/9/2022 14:36:56'!
+test09PortfolioCanNotRegisteredItSelf
+	
+	aPortfolio register: anAccountWith50Pesos.
+	
+	self assertCanNotAddAnAccount: aPortfolio onAPortfolio: aPortfolio andRaiseError: [Portfolio errorAnAccountIsAlreadyRegistered ].! !
+
+!PortfolioTest methodsFor: 'test' stamp: 'LV 11/10/2022 15:08:26'!
+test10APortfolioCanNotRegisteredAnotherPortfolioWithTheSameAccount
+
+	self registered: anAccountWith50Pesos onPortoflio: aPortfolio  andRegistered: anAccountWith50Pesos  onPortfolio: anotherPortfolio .
+	
+	self assertCanNotAddAnAccount: anotherPortfolio onAPortfolio: aPortfolio andRaiseError: [Portfolio errorAnAccountIsAlreadyRegistered ].! !
+
+
+!PortfolioTest methodsFor: 'set up' stamp: 'LV 11/10/2022 15:05:02'!
+setUp
+	
+	anAccountWith50Pesos := ReceptiveAccount new.
+	depositOf50Pesos := Deposit register: 50 * peso on: anAccountWith50Pesos .
+	
+	anAccountWith100Pesos := ReceptiveAccount new.
+	Deposit register: 150 * peso on: anAccountWith100Pesos .
+	withdrawOf50Pesos := Withdraw register: 50 * peso on: anAccountWith100Pesos .
+	
+	aPortfolio := Portfolio new.
+	anotherPortfolio := Portfolio new
+	! !
+
+
+!classDefinition: #ReceptiveAccountTest category: 'ServiciosFinancieros-Ejercicio'!
+TestCase subclass: #ReceptiveAccountTest
+	instanceVariableNames: 'anAccount'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio'!
+
+!ReceptiveAccountTest methodsFor: 'tests' stamp: 'LV 11/10/2022 14:22:39'!
+assertAnAccountRegisterADepositOf: anAmountToDeposit andAWithdrawOf: anAmountToWithdraw hasABalanceOf: aBalance
+
+	Deposit register: anAmountToDeposit on: anAccount .
+	Withdraw register: anAmountToWithdraw on: anAccount. 
+		
+	self assert: aBalance equals: anAccount balance! !
+
+!ReceptiveAccountTest methodsFor: 'tests' stamp: 'LV 11/10/2022 15:31:30'!
+depositAnAmount: amount onAnAccount: account
+	
+	^Deposit register: amount on: account .! !
+
+!ReceptiveAccountTest methodsFor: 'tests' stamp: 'LV 11/10/2022 14:23:25'!
+test01ReceptiveAccountHaveZeroAsBalanceWhenCreated 
+
+	self assertAnAccountRegisterADepositOf: 0 * peso andAWithdrawOf:  0 * peso  hasABalanceOf:  0 * peso! !
+
+!ReceptiveAccountTest methodsFor: 'tests' stamp: 'LV 11/10/2022 14:23:56'!
+test02DepositIncreasesBalanceOnTransactionValue 
+
+	self assertAnAccountRegisterADepositOf: 100*peso andAWithdrawOf: 0 * peso  hasABalanceOf: 100 * peso! !
+
+!ReceptiveAccountTest methodsFor: 'tests' stamp: 'LV 11/10/2022 14:24:31'!
+test03WithdrawDecreasesBalanceOnTransactionValue 
+
+	
+	self assertAnAccountRegisterADepositOf: 100 * peso andAWithdrawOf: 50 * peso  hasABalanceOf: 50 * peso ! !
+
+!ReceptiveAccountTest methodsFor: 'tests' stamp: 'LV 11/10/2022 14:26:18'!
+test04WithdrawValueMustBePositive 
+
+	| withdrawValue |
+	
+	withdrawValue := 50 * peso.
+	
+	self assert: withdrawValue equals: (Withdraw register: withdrawValue on: anAccount) value
+! !
+
+!ReceptiveAccountTest methodsFor: 'tests' stamp: 'LV 11/10/2022 15:34:25'!
+test05ReceptiveAccountKnowsRegisteredTransactions 
+
+	| deposit withdraw |
+	
+	deposit := self depositAnAmount: 50 * peso onAnAccount: anAccount .
+	withdraw := Withdraw register: 50 * peso on: anAccount.
+		
+	self assert: (anAccount hasRegistered: deposit).
+	self assert: (anAccount hasRegistered: withdraw).
+! !
+
+!ReceptiveAccountTest methodsFor: 'tests' stamp: 'LV 11/10/2022 15:26:29'!
+test06ReceptiveAccountDoNotKnowNotRegisteredTransactions
+
+	| deposit withdraw |
+	
+	deposit :=  Deposit for: 100 * peso.
+	withdraw := Withdraw for: 50 * peso.
+		
+	self deny: (anAccount hasRegistered: (Deposit for: 100 * peso)).
+	self deny: (anAccount hasRegistered: (Withdraw for: 50 * peso)).
+! !
+
+!ReceptiveAccountTest methodsFor: 'tests' stamp: 'LV 11/10/2022 15:33:46'!
+test07AccountKnowsItsTransactions 
+
+	| deposit |
+	
+	deposit := self depositAnAmount: 50 * peso  onAnAccount: anAccount.
+	
+	self assert: 1 equals: anAccount transactions size.
+	self assert: anAccount transactions includes: deposit
+! !
+
+
+!ReceptiveAccountTest methodsFor: 'set up' stamp: 'LV 11/10/2022 14:18:20'!
+setUp
+	
+	anAccount := ReceptiveAccount new.! !
+
+
+!classDefinition: #TransferTest category: 'ServiciosFinancieros-Ejercicio'!
+TestCase subclass: #TransferTest
+	instanceVariableNames: 'extractionAccount depositAccount aTransfer'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio'!
+
+!TransferTest methodsFor: 'setup' stamp: 'LV 11/6/2022 23:12:22'!
+setUp
+
+	extractionAccount := ReceptiveAccount new.
+	Deposit register: 100 * peso on: extractionAccount. 
+	
+	depositAccount := ReceptiveAccount new.! !
+
+
+!TransferTest methodsFor: 'test' stamp: 'LV 11/6/2022 23:12:35'!
+assertALeg: aBlockWithALeg knowsItsOppsite: aBlockWithOppositeLeg
+
+	aTransfer := Transfer register: 50 * peso from: extractionAccount to: depositAccount .
+	
+	self assert: aBlockWithALeg value  equals: aBlockWithOppositeLeg value
+! !
+
+!TransferTest methodsFor: 'test' stamp: 'LV 11/8/2022 21:06:58'!
+assertATransferOf: anAmount toTheAccount: aDepositAccount shouldBeInvalidAndReturnError: aBlockWithAnError
+	
+	self should: [self transfer: anAmount from: extractionAccount to: aDepositAccount ]
+		raise: Error  
+		withExceptionDo:[ :anErrorMessage |
+						self assert: aBlockWithAnError value equals: anErrorMessage messageText]! !
+
+!TransferTest methodsFor: 'test' stamp: 'LV 11/6/2022 23:13:32'!
+test01AnAccountCanTransferCorrecly
+
+	self transfer: 50 * peso from: extractionAccount to: depositAccount .
+	
+	self assert: 50 * peso equals: depositAccount balance.
+	self assert: 50 * peso equals: extractionAccount balance! !
+
+!TransferTest methodsFor: 'test' stamp: 'LV 11/6/2022 23:13:37'!
+test02ATransferKnowItsValue
+	 
+	self transfer: 50 * peso from: extractionAccount to: depositAccount .
+	
+	self assert: (aTransfer value) equals: 50 * peso
+	
+	
+	! !
+
+!TransferTest methodsFor: 'test' stamp: 'LV 11/6/2022 23:17:53'!
+test03AnAccountCanNotTransferAnAmountHigerThanItsBalance
+	
+	self assertATransferOf: 150 * peso  toTheAccount: depositAccount  shouldBeInvalidAndReturnError: [Transfer errorThereIsNotEnoughMoney]
+	
+	
+	
+	
+	! !
+
+!TransferTest methodsFor: 'test' stamp: 'LV 11/6/2022 23:17:39'!
+test04CanNotTransferToAnInvalidAccount
+	
+	
+	self assertATransferOf: 100 * peso  toTheAccount: #Account2  shouldBeInvalidAndReturnError: [Transfer errorAccountDoesNotExist]
+	
+	
+	
+	
+	! !
+
+!TransferTest methodsFor: 'test' stamp: 'LV 11/6/2022 22:51:39'!
+test05ADepositLegKnowsItsOpposite
+	
+	self assertALeg: [aTransfer depositLeg oppositeLeg] knowsItsOppsite: [ aTransfer withdrawLeg] 
+	
+	
+	! !
+
+!TransferTest methodsFor: 'test' stamp: 'LV 11/6/2022 22:52:38'!
+test06AWithdrawLegKnowsItsOpposite
+	
+	self assertALeg: [aTransfer withdrawLeg oppositeLeg] knowsItsOppsite: [ aTransfer depositLeg ] 
+	
+	
+	! !
+
+!TransferTest methodsFor: 'test' stamp: 'LV 11/6/2022 23:13:15'!
+transfer: anAmount from: anExtractionAccount to: aDepositAccount
+	
+	^aTransfer := Transfer register: anAmount from: anExtractionAccount  to: aDepositAccount .! !
+
+
+!classDefinition: #Account category: 'ServiciosFinancieros-Ejercicio'!
+Object subclass: #Account
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio'!
+
+!Account methodsFor: 'initialization' stamp: 'LV 11/9/2022 16:31:21'!
+initialize
+	
+		self subclassResponsibility ! !
+
+
+!Account methodsFor: 'main protocol' stamp: 'LV 11/9/2022 16:31:02'!
+balance
+	
+	self subclassResponsibility ! !
+
+!Account methodsFor: 'main protocol' stamp: 'LV 11/9/2022 16:31:06'!
+hasRegistered: aTransaction
+	
+		self subclassResponsibility ! !
+
+!Account methodsFor: 'main protocol' stamp: 'LV 11/9/2022 16:31:09'!
+isARegisteredAccount: anAccount
+	
+		self subclassResponsibility ! !
+
+!Account methodsFor: 'main protocol' stamp: 'LV 11/9/2022 16:31:13'!
+register: anAccount
+	
+		self subclassResponsibility ! !
+
+!Account methodsFor: 'main protocol' stamp: 'LV 11/9/2022 16:31:17'!
+transactions
+	
+		self subclassResponsibility ! !
+
+
+!classDefinition: #Portfolio category: 'ServiciosFinancieros-Ejercicio'!
+Account subclass: #Portfolio
+	instanceVariableNames: 'accounts'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio'!
+
+!Portfolio methodsFor: 'main protocol' stamp: 'LV 11/8/2022 14:38:09'!
+balance 
+	
+	accounts ifEmpty:[^ 0].
+	
+	^accounts sum:[:aPortfolioAccount | aPortfolioAccount balance]! !
+
+!Portfolio methodsFor: 'main protocol' stamp: 'LV 11/8/2022 14:38:27'!
+hasRegistered: aTransaction
+	
+	^accounts anySatisfy: [: aPortfolioAccount | aPortfolioAccount hasRegistered: aTransaction].
+	
+	! !
+
+!Portfolio methodsFor: 'main protocol' stamp: 'LV 11/9/2022 22:56:02'!
+isARegisteredAccount: anAccount
+	
+	^(accounts anySatisfy:[:aPortfolioAccount | aPortfolioAccount isARegisteredAccount: anAccount ]) 
+						
+						or:[ self = anAccount ] 
+						
+						or:[ accounts anySatisfy:[: aPorfolioAccount | 
+										anAccount isARegisteredAccount: aPorfolioAccount ]] 		
+									
+	
+	
+	! !
+
+!Portfolio methodsFor: 'main protocol' stamp: 'LV 11/9/2022 16:06:20'!
+register: anAccount
+	
+	(self isARegisteredAccount: anAccount) ifTrue:[^self error: self class errorAnAccountIsAlreadyRegistered ]. 
+	
+	accounts add: anAccount.
+	
+	
+	
+	
+	! !
+
+!Portfolio methodsFor: 'main protocol' stamp: 'LV 11/9/2022 22:56:40'!
+transactions
+	| transactions |
+	
+	transactions := OrderedCollection new.
+	
+	accounts do:[: aPortfolioAccount | transactions addAll: aPortfolioAccount transactions ].
+	
+	^transactions ! !
+
+
+!Portfolio methodsFor: 'initialization' stamp: 'LV 11/9/2022 22:54:55'!
+initialize
+	
+	accounts := OrderedCollection new.
+	
+	
+	
+	! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Portfolio class' category: 'ServiciosFinancieros-Ejercicio'!
+Portfolio class
+	instanceVariableNames: ''!
+
+!Portfolio class methodsFor: 'error' stamp: 'LV 11/8/2022 14:08:26'!
+errorAnAccountIsAlreadyRegistered
+
+	^'can not registered an account twice on same portfolio'! !
+
+
+!classDefinition: #ReceptiveAccount category: 'ServiciosFinancieros-Ejercicio'!
+Account subclass: #ReceptiveAccount
+	instanceVariableNames: 'transactions'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio'!
+
+!ReceptiveAccount methodsFor: 'initialization' stamp: 'NR 10/17/2019 15:06:56'!
+initialize
+
+	transactions := OrderedCollection new.! !
+
+
+!ReceptiveAccount methodsFor: 'main protocol' stamp: 'LV 11/6/2022 20:16:37'!
+balance
+	
+	| totalBalance |
+	totalBalance := 0.
+	
+	transactions do:[:aTransaction | totalBalance := aTransaction calculateBalance: totalBalance].
+	
+	^totalBalance ! !
+
+!ReceptiveAccount methodsFor: 'main protocol' stamp: 'NR 10/17/2019 03:28:43'!
+hasRegistered: aTransaction
+
+	^ transactions includes: aTransaction 
+! !
+
+!ReceptiveAccount methodsFor: 'main protocol' stamp: 'LV 11/8/2022 13:39:48'!
+isARegisteredAccount: anAccount
+	
+	^self = 	anAccount ! !
+
+!ReceptiveAccount methodsFor: 'main protocol' stamp: 'HernanWilkinson 7/13/2011 18:37'!
+register: aTransaction
+
+	transactions add: aTransaction 
+! !
+
+!ReceptiveAccount methodsFor: 'main protocol' stamp: 'HernanWilkinson 7/13/2011 18:37'!
+transactions 
+
+	^ transactions copy! !
+
+
+!classDefinition: #AccountTransaction category: 'ServiciosFinancieros-Ejercicio'!
+Object subclass: #AccountTransaction
+	instanceVariableNames: 'value'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio'!
+
+!AccountTransaction methodsFor: 'value' stamp: 'LV 11/6/2022 22:42:45'!
+value 
+
+	^value! !
+
+
+!AccountTransaction methodsFor: 'balance' stamp: 'LV 11/6/2022 20:16:37'!
+calculateBalance: anAccount
+	
+	self subclassResponsibility .! !
+
+
+!AccountTransaction methodsFor: 'initialization' stamp: 'LV 11/6/2022 22:42:31'!
+initializeFor: aValue
+	
+	value := 	aValue ! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'AccountTransaction class' category: 'ServiciosFinancieros-Ejercicio'!
+AccountTransaction class
+	instanceVariableNames: ''!
+
+!AccountTransaction class methodsFor: 'instance creation' stamp: 'NR 10/17/2019 03:22:00'!
+register: aValue on: account
+
+	| transaction |
+	
+	transaction := self for: aValue.
+	account register: transaction.
+		
+	^ transaction! !
+
+
+!classDefinition: #Deposit category: 'ServiciosFinancieros-Ejercicio'!
+AccountTransaction subclass: #Deposit
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio'!
+
+!Deposit methodsFor: 'operation - private' stamp: 'LV 11/6/2022 20:16:37'!
+calculateBalance: aBalance
+	
+	^ aBalance + self value.
+	! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Deposit class' category: 'ServiciosFinancieros-Ejercicio'!
+Deposit class
+	instanceVariableNames: ''!
+
+!Deposit class methodsFor: 'instance creation' stamp: 'HernanWilkinson 7/13/2011 18:38'!
+for: aValue
+
+	^ self new initializeFor: aValue ! !
+
+
+!classDefinition: #TransferLeg category: 'ServiciosFinancieros-Ejercicio'!
+AccountTransaction subclass: #TransferLeg
+	instanceVariableNames: 'transfer'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio'!
+
+!TransferLeg methodsFor: 'initialization' stamp: 'LV 11/6/2022 20:25:32'!
+initializeFor: aTransfer
+	
+	transfer := aTransfer ! !
+
+
+!TransferLeg methodsFor: 'operation - private' stamp: 'LV 11/6/2022 22:34:44'!
+calculateBalance: aBalance
+	
+	self subclassResponsibility ! !
+
+
+!TransferLeg methodsFor: 'tranfer leg' stamp: 'LV 11/6/2022 20:33:01'!
+oppositeLeg
+
+	self subclassResponsibility.! !
+
+
+!TransferLeg methodsFor: 'value' stamp: 'LV 11/6/2022 20:37:50'!
+value
+
+	^transfer value
+	
+	! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'TransferLeg class' category: 'ServiciosFinancieros-Ejercicio'!
+TransferLeg class
+	instanceVariableNames: ''!
+
+!TransferLeg class methodsFor: 'instance creation' stamp: 'LV 11/6/2022 20:40:42'!
+registerForATransfer: aTransfer on: anAccount
+	
+	| transferLeg |
+	
+	transferLeg := self for: aTransfer .
+	anAccount register: transferLeg .
+		
+	^ transferLeg ! !
+
+
+!classDefinition: #DepositLeg category: 'ServiciosFinancieros-Ejercicio'!
+TransferLeg subclass: #DepositLeg
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio'!
+
+!DepositLeg methodsFor: 'operation private' stamp: 'LV 11/6/2022 20:43:32'!
+calculateBalance: aBalance
+	
+	^ aBalance + self value.! !
+
+
+!DepositLeg methodsFor: 'tranfer leg' stamp: 'LV 11/6/2022 20:34:43'!
+oppositeLeg
+	
+	^ transfer withdrawLeg! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'DepositLeg class' category: 'ServiciosFinancieros-Ejercicio'!
+DepositLeg class
+	instanceVariableNames: ''!
+
+!DepositLeg class methodsFor: 'instance creation' stamp: 'LV 11/6/2022 20:52:50'!
+for: aTransfer
+	
+	^self new initializeFor: aTransfer.! !
+
+
+!classDefinition: #WithdrawLeg category: 'ServiciosFinancieros-Ejercicio'!
+TransferLeg subclass: #WithdrawLeg
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio'!
+
+!WithdrawLeg methodsFor: 'operation private' stamp: 'LV 11/6/2022 20:43:42'!
+calculateBalance: aBalance
+	
+	^aBalance - self value.! !
+
+
+!WithdrawLeg methodsFor: 'transfer leg' stamp: 'LV 11/6/2022 20:38:20'!
+oppositeLeg
+	
+	^transfer depositLeg! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'WithdrawLeg class' category: 'ServiciosFinancieros-Ejercicio'!
+WithdrawLeg class
+	instanceVariableNames: ''!
+
+!WithdrawLeg class methodsFor: 'instance creation' stamp: 'LV 11/6/2022 20:52:46'!
+for: aTransfer
+	
+	^self new initializeFor: aTransfer.! !
+
+
+!classDefinition: #Withdraw category: 'ServiciosFinancieros-Ejercicio'!
+AccountTransaction subclass: #Withdraw
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio'!
+
+!Withdraw methodsFor: 'operation - private' stamp: 'LV 11/6/2022 20:16:37'!
+calculateBalance: aBalance
+	
+	^aBalance - self value.
+	! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Withdraw class' category: 'ServiciosFinancieros-Ejercicio'!
+Withdraw class
+	instanceVariableNames: ''!
+
+!Withdraw class methodsFor: 'instance creation' stamp: 'HernanWilkinson 7/13/2011 18:33'!
+for: aValue
+
+	^ self new initializeFor: aValue ! !
+
+
+!classDefinition: #Transfer category: 'ServiciosFinancieros-Ejercicio'!
+Object subclass: #Transfer
+	instanceVariableNames: 'depositLeg withdrawLeg value'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio'!
+
+!Transfer methodsFor: 'accesing' stamp: 'LV 11/6/2022 20:42:33'!
+depositLeg
+	
+	^depositLeg ! !
+
+!Transfer methodsFor: 'accesing' stamp: 'LV 11/6/2022 20:54:53'!
+value
+	
+	^value! !
+
+!Transfer methodsFor: 'accesing' stamp: 'LV 11/6/2022 20:42:14'!
+withdrawLeg
+	
+	^withdrawLeg ! !
+
+
+!Transfer methodsFor: 'initialization' stamp: 'LV 11/6/2022 20:50:08'!
+initializeFor: aValue fromAnExtractor: extractorAccount toADepositor: depositorAccount
+	
+	value := 	aValue .
+	
+	depositLeg := DepositLeg registerForATransfer: self on: depositorAccount .
+	
+	withdrawLeg := WithdrawLeg registerForATransfer: self on: extractorAccount . 
+	! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Transfer class' category: 'ServiciosFinancieros-Ejercicio'!
+Transfer class
+	instanceVariableNames: ''!
+
+!Transfer class methodsFor: 'instance creation' stamp: 'LV 11/8/2022 21:05:57'!
+register: aValue from: anExtractionAccount to: aDepositAcount
+	
+	aValue > anExtractionAccount balance ifTrue:[self error: self errorThereIsNotEnoughMoney]. 
+	
+	(aDepositAcount isKindOf: ReceptiveAccount) ifFalse:[self error: self errorAccountDoesNotExist].
+	
+	^self new initializeFor: aValue fromAnExtractor: anExtractionAccount  toADepositor: aDepositAcount 
+	
+	! !
+
+
+!Transfer class methodsFor: 'error' stamp: 'LV 11/5/2022 09:59:47'!
+errorAccountDoesNotExist
+	
+	^'The account you want to transfer does not exist'! !
+
+!Transfer class methodsFor: 'error' stamp: 'LV 11/5/2022 09:41:55'!
+errorThereIsNotEnoughMoney
+
+	^'Can not transfer, there is not enough money'! !
